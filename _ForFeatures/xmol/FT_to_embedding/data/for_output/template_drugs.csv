@@ -1,0 +1,5 @@
+drugid,smiles
+CHEMBL2236624,O=C(NNC(=O)c1cc([N+](=O)[O-])ccc1Cl)c1ccncc1
+CHEMBL1446444,CN(CC(=O)Nc1ccc(Cl)cc1)S(=O)(=O)c1cccc2cccnc12
+CHEMBL106683,NS(=O)(=O)c1ccc(SCCCO)s1
+CHEMBL1398980,O=C(/C=C/c1ccc2c(c1)OCO2)NCCSCc1ccc(Cl)cc1Cl

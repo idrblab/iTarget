@@ -1,0 +1,4 @@
+#!/home/zhanghan17/tf_12/python2.7/bin/python
+# EASY-INSTALL-SCRIPT: 'paddlecloudplatform==2.0.5','paddlecloud'
+__requires__ = 'paddlecloudplatform==2.0.5'
+__import__('pkg_resources').run_script('paddlecloudplatform==2.0.5', 'paddlecloud')

@@ -1,0 +1,37 @@
+ 1013  export https_proxy=http://172.19.61.250:3128/
+ 1014  export http_proxy=http://172.19.61.250:3128/
+ 1015  bin/python bin/pip install -i https://pypi.Python.org/simple/ --trusted-host pypi.Python.org tensorflow==
+ 1016  bin/python bin/pip install -i https://pypi.Python.org/simple/ --trusted-host pypi.Python.org tensorflow-gpu==
+ 1017  bin/python bin/pip install -i https://pypi.Python.org/simple/ --trusted-host pypi.Python.org tensorflow-gpu==1.11.0
+ 1018  cat ../../env_log 
+ 1019  export LD_LIBRARY_PATH=/home/work/cuda-8.0/lib64:/home/work/cudnn/cudnn_v6/cuda/lib64:/home/work/cuda-8.0/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+ 1020  export CUDA_VISIBLE_DEVICES=6
+ 1021  ./bin/python
+ 1022  find / -name libcublas.so.9.0
+ 1023  clear
+ 1024  ll -rt
+ 1025  bin/python bin/pip install -i https://pypi.Python.org/simple/ --trusted-host pypi.Python.org tensorflow-gpu==
+ 1026  find / -name libcublas.so.9.0
+ 1027  #ls /home/ssd9/zenghongsheng/anaconda2/pkgs/cudnn-7.1.2-cuda9.0_0/
+ 1028  cat en
+ 1029  cat ../../env_log 
+ 1030  export LD_LIBRARY_PATH=/home/ssd9/zenghongsheng/anaconda2/pkgs/cudnn-7.1.2-cuda9.0_0/lib:/home/ssd9/zenghongsheng/anaconda2/pkgs/cudatoolkit-9.0-h13b8566_0/lib:$LD_LIBRARY_PATH
+ 1031  ./bin/python
+ 1032  cat ../../env_log 
+ 1033  bin/python bin/pip uninstall -i https://pypi.Python.org/simple/ --trusted-host pypi.Python.org tensorflow
+ 1034  bin/python bin/pip uninstall tensorflow
+ 1035  bin/python bin/pip uninstall tensorflow-gpu
+ 1036  ./bin/python
+ 1037  bin/python bin/pip uninstall tensorflow-gpu
+ 1038  bin/python bin/pip uninstall protobuf
+ 1039  bin/python bin/pip install -i https://pypi.Python.org/simple/ --trusted-host pypi.Python.org tensorflow-gpu==1.11.0
+ 1040  ./bin/python
+ 1041  pwd
+ 1042  nvidia-smi 
+ 1043  ll -rt
+ 1044  cat ../../env_log 
+ 1045  export LD_LIBRARY_PATH=/home/work/cuda-8.0/lib64:/home/work/cudnn/cudnn_v6/cuda/lib64:/home/work/cuda-8.0/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+ 1046  export CUDA_VISIBLE_DEVICES=7
+ 1047  ./bin/python
+ 1048  ll -rt
+ 1049  history > install_history

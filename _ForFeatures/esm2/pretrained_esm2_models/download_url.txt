@@ -1,0 +1,2 @@
+You can download pre-trained esm2 model weights according to 'https://github.com/facebookresearch/esm'.
+files of 'esm2_t36_3B_UR50D.pt' and 'esm2_t36_3B_UR50D-contact-regression.pt' were used and should be placed here.
