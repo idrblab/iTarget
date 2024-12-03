@@ -16,15 +16,7 @@
 
 1. Download source codes.
 2. Should be deployed on Linux.
-3. The Repository tree includes directories as follows:
-```
- |- paper
-    |- materials
- |- README.md
- |- requirements.txt
- |- LICENSE
-```
-4. Python environment preparation
+3. Python environment preparation
 
    We provide three packed conda environments for users to construct Python dependencies using Anaconda.
 
