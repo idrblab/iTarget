@@ -94,7 +94,9 @@ sh 1_trans_drug.sh	# for compounds, by default, {--scale_method}='standard', {--
 sh 1_trans_prot.sh	# for proteins, by default, {--scale_method}='standard', {--disttype}='uniprot+fullchembl', {--source}='example' or user-defined
 ```
 
-##### 2.5 Prepare dataset for cross-validation :
+#### 3. Model training and Cross-validation
+
+##### 3.1 Prepare dataset for cross-validation :
 
 ```
 sh 2_split_cvdata
@@ -102,7 +104,7 @@ sh 2_split_cvdata
 # This step is not required for bindingdb benchmark, has done in step 1.1
 ```
 
-##### 2.6 Run model training and cross-validation:
+##### 3.2 Run model training and cross-validation:
 
 ```
 sh 3_training_cv.sh # by defalut, {--kfold_num}=5, {--task}='cv', {--n_epochs}=128, {--gpu}=0, {--batch_size}=512, {--lr}=5e-4, {--monitor}='auc_val', {--source}='example'
