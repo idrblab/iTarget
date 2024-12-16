@@ -46,57 +46,6 @@ def plot_scatter(molmap, htmlpath = './', htmlname = None, radius = 3):
     df = df.join(bitsinfo.loc[molmap.flist].reset_index())
     # df['colors'] = df['Subtypes'].map(colormaps)
 
-# df = pd.DataFrame(embedded.embedding_, index = self.flist,columns=['x', 'y'])
-# typemap = self.bitsinfo
-# df = df.join(typemap)
-# df['Channels'] = df['Subtypes']
-# self.df_embedding = df
-# self.embedded = embedded
-
-#     H = Highchart(width=1000, height=850)
-#     H.set_options('chart', {'type': 'scatter', 'zoomType': 'xy'})    
-#     H.set_options('title', {'text': title})
-#     H.set_options('subtitle', {'text': subtitle})
-#     H.set_options('xAxis', {'title': {'enabled': True,'text': 'X', 'style':{'fontSize':20}},
-#                            'labels':{'style':{'fontSize':20}}, 
-#                            'gridLineWidth': 1,
-#                            'startOnTick': True,
-#                            'endOnTick': True,
-#                            'showLastLabel': True})
-    
-#     H.set_options('yAxis', {'title': {'text': 'Y', 'style':{'fontSize':20}},
-#                             'labels':{'style':{'fontSize':20}}, 
-#                             'gridLineWidth': 1,})
-    
-# #     H.set_options('legend', {'layout': 'horizontal','verticalAlign': 'top','align':'right','floating': False,
-# #                              'backgroundColor': "(Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'",
-# #                              'borderWidth': 1})
-    
-    
-#     H.set_options('legend', {'align': 'right', 'layout': 'vertical',
-#                              'margin': 1, 'verticalAlign': 'top', 'y':40,
-#                               'symbolHeight': 12, 'floating': False,})
-
-    
-#     H.set_options('plotOptions', {'scatter': {'marker': {'radius': radius,
-#                                                          'states': {'hover': {'enabled': True,
-#                                                                               'lineColor': 'rgb(100,100,100)'}}},
-#                                               'states': {'hover': {'marker': {'enabled': False} }},
-#                                               'tooltip': {'headerFormat': '<b>{series.name}</b><br>',
-#                                                           'pointFormat': '{point.IDs}'}},
-#                                   'series': {'turboThreshold': 5000}})
-    
-#     for subtype, color in colormaps.items():
-#         dfi = df[df['Subtypes'] == subtype]
-#         if len(dfi) == 0:
-#             continue
-            
-#         data = dfi.to_dict('records')
-#         H.add_data_set(data, 'scatter', subtype, color=color)
-#     H.save_file(filename)
-#     print_info('save html file to %s' % filename)
-#     return df, H
-
     channels = molmap.channel_col
     df_grid = df.sort_values(['y', 'x']).reset_index(drop=True)
     mp_colors = colormaps
@@ -123,8 +72,8 @@ def plot_scatter(molmap, htmlpath = './', htmlname = None, radius = 3):
     # plt.legend(handles=patches, bbox_to_anchor=(l,1.01), loc='upper right', ncol=1, facecolor="w", numpoints=1,fontsize=1 )    
     
     #plt.tight_layout()
-    plt.savefig(f'{filename}.tif', bbox_inches='tight', dpi = 600 ,format='tif')
-    print_info('save file to %s' % filename)
+    # plt.savefig(f'{filename}.tif', bbox_inches='tight', dpi = 600 ,format='tif')
+    # print_info('save file to %s' % filename)
     plt.close()
 
     return df, fig
@@ -181,66 +130,6 @@ def plot_grid(molmap, htmlpath = './', htmlname = None):
     # df['colors'] = pd.Series([i.str.cat(sep=',') for idx,i in pd.DataFrame.from_dict({col:s.map(colormaps) for col, s in bitsinfo['Subtypes'].str.split(',', expand=True).iteritems()}).iterrows()])
 
     
-#     H = Highchart(width=1000, height=850)
-#     H.set_options('chart', {'type': 'heatmap', 'zoomType': 'xy'})
-#     H.set_options('title', {'text': title})
-#     H.set_options('subtitle', {'text': subtitle})
-
-# #     H.set_options('xAxis', {'title': '', 
-# #                             'min': 0, 'max': molmap.fmap_shape[1]-1,
-# #                             'allowDecimals':False,
-# #                             'labels':{'style':{'fontSize':20}}})
-    
-# #     H.set_options('yAxis', {'title': '', 'tickPosition': 'inside', 
-# #                             'min': 0, 'max': molmap.fmap_shape[0]-1,
-# #                             'reversed': True,
-# #                             'allowDecimals':False,
-# #                             'labels':{'style':{'fontSize':20}}})
-
-#     H.set_options('xAxis', {'title': None,                         
-#                             'min': 0, 'max': molmap.fmap_shape[1],
-#                             'startOnTick': False,
-#                             'endOnTick': False,    
-#                             'allowDecimals':False,
-#                             'labels':{'style':{'fontSize':20}}})
-
-    
-#     H.set_options('yAxis', {'title': {'text': ' ', 'style':{'fontSize':20}}, 
-#                             'startOnTick': False,
-#                             'endOnTick': False,
-#                             'gridLineWidth': 0,
-#                             'reversed': True,
-#                             'min': 0, 'max': molmap.fmap_shape[0],
-#                             'allowDecimals':False,
-#                             'labels':{'style':{'fontSize':20}}})
-    
-
-
-#     H.set_options('legend', {'align': 'right', 'layout': 'vertical',
-#                              'margin': 1, 'verticalAlign': 'top', 
-#                              'y': 60, 'symbolHeight': 12, 'floating': False,})
-
-    
-#     H.set_options('tooltip', {'headerFormat': '<b>{series.name}</b><br>',
-#                               'pointFormat': '{point.v}'})
-
-    
-#     H.set_options('plotOptions', {'series': {'turboThreshold': 5000}})
-    
-#     for subtype, color in colormaps.items():
-#         dfi = df[df['Subtypes'] == subtype]
-#         if len(dfi) == 0:
-#             continue
-#         H.add_data_set(dfi.to_dict('records'), 'heatmap', 
-#                        name = subtype,
-#                        color = color,#dataLabels = {'enabled': True, 'color': '#000000'}
-#                       )
-#     H.save_file(filename)
-#     print_info('save html file to %s' % filename)
-    
-#     return df, H
-
-
     channels = molmap.channel_col
     df = df.join(bitsinfo.set_index('IDs')[channels], on='v')
     df_grid = df.sort_values(['y', 'x']).reset_index(drop=True)
@@ -282,8 +171,8 @@ def plot_grid(molmap, htmlpath = './', htmlname = None):
     # plt.legend(handles=patches, bbox_to_anchor=(l,1.01), loc='upper right', ncol=1, facecolor="w", numpoints=1,fontsize=6 )    
     
     #plt.tight_layout()
-    plt.savefig(f'{filename}.tif', bbox_inches='tight', dpi = 600 ,format='tif')
-    print_info('save file to %s' % filename)
+    # plt.savefig(f'{filename}.tif', bbox_inches='tight', dpi = 600 ,format='tif')
+    # print_info('save file to %s' % filename)
     plt.close()
 
     return df, fig

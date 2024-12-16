@@ -5,8 +5,6 @@ from matplotlib.colors import Colormap
 prj_path = Path(__file__).parent.resolve().parent.resolve()
 sys.path.append(str(prj_path))
 
-# from feamap.feature.fingerprint import Extraction as fext
-# from feamap.feature.descriptor import Extraction as dext
 from feamap.utils.logtools import print_info, print_warn, print_error
 from feamap.utils.matrixopt import Scatter2Grid, Scatter2Array 
 
@@ -237,9 +235,9 @@ class Map(Base):
             elif scale_method == 'None':
                 df = arr.to_frame().T
         # df.columns = self.extract.bitsinfo.IDs
-        # print(f'shape of feature df before var_thr filtration: {df.shape}') # 15128
+        # print(f'shape of feature df before var_thr filtration: {df.shape}') 
         df = df[self.flist]
-        # print(f'shape of feature df after var_thr filtration: {df.shape}') # 15052
+        # print(f'shape of feature df after var_thr filtration: {df.shape}') 
         vector_1d = df.values[0]
         # vector_1d = df.values #shape = (N, ) 
         fmap = self._S.transform(vector_1d)

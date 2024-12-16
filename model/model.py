@@ -24,14 +24,14 @@ prj_path = Path(__file__).parent.resolve().parent.resolve().parent.resolve().par
 
 def load_model(params, model_path, in_channels, gpuid=-1):
     model = MultimapCNN(params, in_channels=in_channels)
-    model.load_state_dict(th.load(os.path.join(model_path/"model-prc-wd1e4-lr5e4-probe.pth")))
+    model.load_state_dict(th.load(os.path.join(model_path/"model.pth")))
     model.device = th.device('cpu' if gpuid == -1 else f'cuda:{gpuid}')
     model.to(model.device)
     return model
     
 def save_model(model, model_path):
     model.to("cpu")
-    th.save(model.state_dict(), os.path.join(model_path/"model-prc-wd1e4-lr5e4-probe.pth"))
+    th.save(model.state_dict(), os.path.join(model_path/"model.pth"))
     print(f"Saved PyTorch Model State to {model_path}")
 
 class MultimapCNN_dataset(Dataset):
@@ -84,7 +84,6 @@ class EarlyStopping:
                 self.save_checkpoint(score, model, model_path)
                 self.counter = 0
 
-        # elif self.monitor=='acc_val':
         else:
             if self._score is None:
                 self._score = np.Inf
@@ -132,19 +131,13 @@ class MultimapCNN(nn.Module):
         self.lr = params.lr
         self.conv1_kernel_size = (9, 13)
         self.dense_layers = [512, 256, 64]
-        # self.dense_layers = [256, 128, 32]
         self.dense_avf = F.relu
         self.last_avf = F.softmax
         self.batch_size = params.batch_size
-        # self.epochs = params.n_epochs
         self.monitor = params.monitor
         self.metric = params.metric
         self.num_outputs = 2
         self.captum = False
-
-        # Hout = (Hin-1)stride[0] - 2padding[0] + kernel_size[0] + output_padding[0]
-        # Wout = (Win-1)stride[1] - 2padding[1] + kernel_size[1] + output_padding[1]
-        # T = (T-1)*stride-2*x+k --> x=(k-1)/2 if stride=1
 
         self.conv1_d = nn.Conv2d(in_channels=in_channels[0], out_channels=48, kernel_size=self.conv1_kernel_size[0], stride = 1, padding = int((self.conv1_kernel_size[0]-1)/2), )
         self.pool1_d = nn.MaxPool2d(kernel_size=3, stride = 2, padding = int((3-1)/2))
@@ -157,73 +150,27 @@ class MultimapCNN(nn.Module):
         self.Incep2conv2_d = nn.Conv2d(in_channels=96, out_channels=64, kernel_size=3, stride = 1, padding=int((3-1)/2))
         self.Incep2conv3_d = nn.Conv2d(in_channels=96, out_channels=64, kernel_size=1, stride = 1, padding=int((1-1)/2))
 
-        # self.conv1_d = nn.Conv2d(in_channels=in_channels[0], out_channels=72, kernel_size=self.conv1_kernel_size[0], stride = 1, padding = int((self.conv1_kernel_size[0]-1)/2), )
-        # self.pool1_d = nn.MaxPool2d(kernel_size=3, stride = 2, padding = int((3-1)/2))
-
-        # self.Incep1conv1_d = nn.Conv2d(in_channels=72, out_channels=48, kernel_size=5, stride = 1, padding=int((5-1)/2))
-        # self.Incep1conv2_d = nn.Conv2d(in_channels=72, out_channels=48, kernel_size=3, stride = 1, padding=int((3-1)/2))
-        # self.Incep1conv3_d = nn.Conv2d(in_channels=72, out_channels=48, kernel_size=1, stride = 1, padding=int((1-1)/2))
-        # self.pool2_d = nn.MaxPool2d(kernel_size=3, stride = 2, padding = int((3-1)/2))
-        # self.Incep2conv1_d = nn.Conv2d(in_channels=144, out_channels=96, kernel_size=5, stride = 1, padding=int((5-1)/2))
-        # self.Incep2conv2_d = nn.Conv2d(in_channels=144, out_channels=96, kernel_size=3, stride = 1, padding=int((3-1)/2))
-        # self.Incep2conv3_d = nn.Conv2d(in_channels=144, out_channels=96, kernel_size=1, stride = 1, padding=int((1-1)/2))
-
-
         self.conv1_p = nn.Conv2d(in_channels=in_channels[1], out_channels=72, kernel_size=self.conv1_kernel_size[1], stride = 1, padding = int((self.conv1_kernel_size[1]-1)/2, ))
-        # self.conv1_p = nn.Conv2d(in_channels=in_channels[1], out_channels=96, kernel_size=self.conv1_kernel_size[1], stride = 1, padding = int((self.conv1_kernel_size[1]-1)/2, ))
         self.pool1_p = nn.MaxPool2d(kernel_size=5, stride = 2, padding = int((5-1)/2))
-        # self.pool1_p = nn.MaxPool2d(kernel_size=7, stride = 2, padding = int((7-1)/2))
         self.Incep1conv1_p = nn.Conv2d(in_channels=72, out_channels=48, kernel_size=9, stride = 1, padding=int((9-1)/2))
         self.Incep1conv2_p = nn.Conv2d(in_channels=72, out_channels=48, kernel_size=5, stride = 1, padding=int((5-1)/2))
         self.Incep1conv3_p = nn.Conv2d(in_channels=72, out_channels=48, kernel_size=1, stride = 1, padding=int((1-1)/2))
-        # self.Incep1conv1_p = nn.Conv2d(in_channels=96, out_channels=64, kernel_size=13, stride = 1, padding=int((13-1)/2))
-        # self.Incep1conv2_p = nn.Conv2d(in_channels=96, out_channels=64, kernel_size=7, stride = 1, padding=int((7-1)/2))
-        # self.Incep1conv3_p = nn.Conv2d(in_channels=96, out_channels=64, kernel_size=1, stride = 1, padding=int((1-1)/2))
         self.pool2_p = nn.MaxPool2d(kernel_size=5, stride = 2, padding = int((5-1)/2))
-        # self.pool2_p = nn.MaxPool2d(kernel_size=7, stride = 2, padding = int((7-1)/2))
         self.Incep2conv1_p = nn.Conv2d(in_channels=144, out_channels=96, kernel_size=9, stride = 1, padding=int((9-1)/2))
         self.Incep2conv2_p = nn.Conv2d(in_channels=144, out_channels=96, kernel_size=5, stride = 1, padding=int((5-1)/2))
         self.Incep2conv3_p = nn.Conv2d(in_channels=144, out_channels=96, kernel_size=1, stride = 1, padding=int((1-1)/2))
-        # self.Incep2conv1_p = nn.Conv2d(in_channels=192, out_channels=128, kernel_size=13, stride = 1, padding=int((13-1)/2))
-        # self.Incep2conv2_p = nn.Conv2d(in_channels=192, out_channels=128, kernel_size=7, stride = 1, padding=int((7-1)/2))
-        # self.Incep2conv3_p = nn.Conv2d(in_channels=192, out_channels=128, kernel_size=1, stride = 1, padding=int((1-1)/2))
 
-        # self.pool3_p = nn.MaxPool2d(kernel_size=5, stride = 2, padding = int((5-1)/2))
-        # self.Incep3conv1_p = nn.Conv2d(in_channels=288, out_channels=192, kernel_size=9, stride = 1, padding=int((9-1)/2))
-        # self.Incep3conv2_p = nn.Conv2d(in_channels=288, out_channels=192, kernel_size=5, stride = 1, padding=int((5-1)/2))
-        # self.Incep3conv3_p = nn.Conv2d(in_channels=288, out_channels=192, kernel_size=1, stride = 1, padding=int((1-1)/2))
-
-        # self.lstm_d = nn.LSTM(input_size=(64+64+64), hidden_size=64, num_layers=3, batch_first=True)
-        # self.lstm_p = nn.LSTM(input_size=(64+64+64), hidden_size=64, num_layers=3, batch_first=True)
-
-        # self.lstm = nn.LSTM(input_size=int((64+64+64)+(96+96+96)), hidden_size=self.dense_layers[2], num_layers=3, batch_first=True)
-
-        # self.dense1 = nn.Linear(in_features=int((64+64+64)+(192+192+192)), out_features=self.dense_layers[0])
         self.dense1 = nn.Linear(in_features=int((64+64+64)+(96+96+96)), out_features=self.dense_layers[0])
-        # self.dense1 = nn.Linear(in_features=int((64+64+64)+(128+128+128)), out_features=self.dense_layers[0])
         self.dense2 = nn.Linear(in_features=self.dense_layers[0], out_features=self.dense_layers[1])
         self.dense3 = nn.Linear(in_features=self.dense_layers[1], out_features=self.dense_layers[2])
 
         self.last = nn.Linear(in_features=self.dense_layers[2], out_features=self.num_outputs)
-        # self.drop_out = nn.Dropout(p=0.2)
-    #     self.reset_parameters()
-
-    # def reset_parameters(self):
-    #     for para in self.parameters():
-    #         print(para)
-            # nn.init.xavier_uniform_(para.weight)
-        # nn.init.xavier_uniform_(self.dense1.weight)
-        # nn.init.xavier_uniform_(self.dense2.weight)
-        # nn.init.xavier_uniform_(self.dense3.weight)
-        # nn.init.xavier_uniform_(self.last.weight)
-
         
 
     def Inception1d(self, inputs):
         x1 = F.relu(self.Incep1conv1_d(inputs))
         x2 = F.relu(self.Incep1conv2_d(inputs))
         x3 = F.relu(self.Incep1conv3_d(inputs))
-        # outputs = Concatenate()([x1, x2, x3]) 
         outputs = th.cat((x1, x2, x3),1)
         return outputs
 
@@ -231,7 +178,6 @@ class MultimapCNN(nn.Module):
         x1 = F.relu(self.Incep2conv1_d(inputs))
         x2 = F.relu(self.Incep2conv2_d(inputs))
         x3 = F.relu(self.Incep2conv3_d(inputs))
-        # outputs = Concatenate()([x1, x2, x3]) 
         outputs = th.cat((x1, x2, x3),1)
         return outputs
 
@@ -239,7 +185,6 @@ class MultimapCNN(nn.Module):
         x1 = F.relu(self.Incep1conv1_p(inputs))
         x2 = F.relu(self.Incep1conv2_p(inputs))
         x3 = F.relu(self.Incep1conv3_p(inputs))
-        # outputs = Concatenate()([x1, x2, x3]) 
         outputs = th.cat((x1, x2, x3),1)
         return outputs
 
@@ -247,7 +192,6 @@ class MultimapCNN(nn.Module):
         x1 = F.relu(self.Incep2conv1_p(inputs))
         x2 = F.relu(self.Incep2conv2_p(inputs))
         x3 = F.relu(self.Incep2conv3_p(inputs))
-        # outputs = Concatenate()([x1, x2, x3]) 
         outputs = th.cat((x1, x2, x3),1)
         return outputs
 
@@ -255,13 +199,10 @@ class MultimapCNN(nn.Module):
         x1 = F.relu(self.Incep3conv1_p(inputs))
         x2 = F.relu(self.Incep3conv2_p(inputs))
         x3 = F.relu(self.Incep3conv3_p(inputs))
-        # outputs = Concatenate()([x1, x2, x3]) 
         outputs = th.cat((x1, x2, x3),1)
         return outputs
 
-    def forward(self, drug_inputs, cell_inputs):
-    # def forward(self, x):
-        # drug_inputs, cell_inputs = x
+    def forward(self, drug_inputs, comp_inputs):
         ## first inputs
         d_conv1 = F.relu(self.conv1_d(drug_inputs))
         d_pool1 = self.pool1_d(d_conv1)
@@ -270,64 +211,32 @@ class MultimapCNN(nn.Module):
         d_incept2 = self.Inception2d(d_pool2)
 
         ## second inputs
-        c_conv1 = F.relu(self.conv1_p(cell_inputs))
+        c_conv1 = F.relu(self.conv1_p(comp_inputs))
         c_pool1 = self.pool1_p(c_conv1)
         c_incept1 = self.Inception1c(c_pool1)
         c_pool2 = self.pool2_p(c_incept1) #p2
         c_incept2 = self.Inception2c(c_pool2)
 
-        # c_pool3 = self.pool3_p(c_incept2) #p3
-        # c_incept3 = self.Inception3c(c_pool3)
-
-        # lstm / global pooling --> flatten
-        # c_incept2.shape = N, C, H, W
-        # d_lstm, _ = self.lstm_d(d_incept2.flatten(start_dim=-2,end_dim=-1).permute(0, 2, 1))
-        # c_lstm, _ = self.lstm_p(c_incept2.flatten(start_dim=-2,end_dim=-1).permute(0, 2, 1))
-        # d_flat1 = d_lstm[:, -1, :] # Take the final time step as the output
-        # c_flat1 = c_lstm[:, -1, :] # Take the final time step as the output
         d_flat1 = F.max_pool2d(input=d_incept2, kernel_size=d_incept2.size()[2:]).squeeze(-1).squeeze(-1) # global pooling
         c_flat1 = F.max_pool2d(input=c_incept2, kernel_size=c_incept2.size()[2:]).squeeze(-1).squeeze(-1) # global pooling
-        # c_flat1 = F.max_pool2d(input=c_incept3, kernel_size=c_incept3.size()[2:]).squeeze(-1).squeeze(-1) # global pooling
 
         ## concat
-        # x = Concatenate()([d_flat1, c_flat1])
         x = th.cat((d_flat1, c_flat1),1)
 
-        # cross_dc = d_flat1.unsqueeze(-1) @ c_flat1.unsqueeze(1)
-        # print("-------------")
-        # print(cross_dc.shape)
-
-        # norm = th.norm(cross_dc, dim=2)
-        # norm = [batch size,compound len]
-        # norm = F.softmax(norm, dim=1)
-        # norm = [batch size,compound len]
-        # trg = torch.squeeze(trg,dim=0)
-        # norm = torch.squeeze(norm,dim=0)
-        # x = th.zeros((cross_dc.shape[0], cross_dc.shape[2])).to(self.device)
-        # for i in range(norm.shape[0]):
-        #     for j in range(norm.shape[1]):
-        #         v = cross_dc[i, j, ]
-        #         v = v * norm[i, j]
-        #         x[i, ] += v
         if self.captum:
             return x
         else:
             return x, d_flat1, c_flat1
         
-    def get_logits(self, drug_inputs, cell_inputs):
+    def get_logits(self, drug_inputs, comp_inputs):
         
-        x, d_flat1, c_flat1 = self.forward(drug_inputs, cell_inputs)
+        x, d_flat1, c_flat1 = self.forward(drug_inputs, comp_inputs)
  
         ## dense layer
         x = self.dense_avf(self.dense1(x))
-        # x = self.drop_out(x)
         x = self.dense_avf(self.dense2(x))
-        # x = self.drop_out(x)
         x = self.dense_avf(self.dense3(x))
 
-        # # final lstm
-        # x, _ = self.lstm(th.repeat_interleave(x.unsqueeze(dim=1), repeats=16, dim=1))
-        # x = x[:, -1, :]
 
         ## last layer
         outputs = self.last(x) # dont need activation function
@@ -335,13 +244,9 @@ class MultimapCNN(nn.Module):
         return outputs
 
 
-    #计算batch中所有pair的对比损失
     def ContrastiveLoss(self, sum, label):
         num = len(sum)
-        # sum1 = []
-        # sum2 = []
-        # label1 = []
-        # label2 = []
+
         combinations = list(itertools.combinations(range(num), 2))
 
 
@@ -353,21 +258,6 @@ class MultimapCNN(nn.Module):
 
         contras_label = label1 & ~label2
 
-        # for combination in combinations:
-        #     i, j = combination
-        #     sum1.append(sum[i])
-        #     sum2.append(sum[j])
-        #     label1.append(label[i])
-        #     label2.append(label[j])
-
-        # sum1 = th.cat(sum1).to(self.device)
-        # sum2 = th.cat(sum2).to(self.device)
-        # label_ls = []
-        # for i in range(len(label1)):
-        #     xor_label = label1[i] & ~label2[i]
-        #     label_ls.append(xor_label)
-
-        # contras_label = th.Tensor(label_ls).to(self.device)
         cos_distance = 1 - F.cosine_similarity(sum1, sum2, dim=-1)
         loss_contrastive = th.mean((1 - contras_label) * th.pow(cos_distance, 2) + 
                                         (contras_label) * th.pow(th.clamp(2 - cos_distance, min=0.0), 3))
@@ -389,9 +279,6 @@ class MultimapCNN(nn.Module):
             # Compute prediction error
             embed, _d, _p = self(X[0],X[1])
             loss_contrast = self.ContrastiveLoss(embed, y)
-            # loss_contrast.backward()
-            # optimizer.step()
-            # optimizer.zero_grad()
 
             pred = self.get_logits(X[0],X[1])
             
@@ -449,7 +336,6 @@ class MultimapCNN(nn.Module):
         return test_loss, test_logits.cpu(), test_label.cpu()
 
     def run_loop(self, X, batch_size = 1):
-        # data = MultimapCNN_dataset(X, to_categorical(num_classes=2,y=np.zeros(len(X))))
         data = MultimapCNN_dataset(X,np.zeros(len(X[0])))
         dataloader = DataLoader(data, batch_size=batch_size, shuffle=False)
         self.to(self.device)
