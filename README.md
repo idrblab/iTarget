@@ -52,7 +52,7 @@ cd ./_ForFeatures/xmol/		# for compounds
 # after finishing representaion, back to the project root path
 ```
 
-#### 2. Template map construction and Feature map transformation
+#### 2. Template map construction
 
 ##### 2.1 For template maps, move the produced LLM feature files in step 1.2 to the working path `./data/original_data/scale/`. 
 
@@ -88,23 +88,25 @@ sh 0_feadist.sh	# by default, {--scale_method}='standard', {--scale_source}='uni
 # copy calculated configs to work path
 cp ../data/processed_data/drug_fea/scale/standard/*.cfg ./feamap/config/trans_from_{--scale_source}/
 cp ../data/processed_data/protein_fea/scale/standard/*.cfg ./feamap/config/trans_from_{--scale_source}/
-
-# feature transformation
-sh 1_trans_drug.sh	# for compounds, by default, {--scale_method}='standard', {--disttype}='uniprot+fullchembl', {--source}='example' or user-defined
-sh 1_trans_prot.sh	# for proteins, by default, {--scale_method}='standard', {--disttype}='uniprot+fullchembl', {--source}='example' or user-defined
 ```
 
-#### 3. Model training and Cross-validation
+#### 3. Feature transformation
 
-##### 3.1 Prepare dataset for cross-validation :
+sh 1_trans_drug.sh	# for compounds, by default, {--scale_method}='standard', {--disttype}='uniprot+fullchembl', {--source}='example' or user-defined
+sh 1_trans_prot.sh	# for proteins, by default, {--scale_method}='standard', {--disttype}='uniprot+fullchembl', {--source}='example' or user-defined
+
+
+#### 4. Model training and Cross-validation
+
+##### 4.1 Prepare dataset for cross-validation :
 
 ```
 sh 2_split_cvdata.sh
-# optional, or you can prepare files following the examples in `./data/processed_data/split_cvdata/`.
+# optional, or you can directly prepare files following the examples in `./data/processed_data/split_cvdata/`.
 # This step is not required for bindingdb benchmark, has done in step 1.1
 ```
 
-##### 3.2 Run model training and cross-validation:
+##### 4.2 Run model training and cross-validation:
 
 ```
 sh 3_train_cv.sh # by defalut, {--kfold_num}=5, {--task}='cv', {--n_epochs}=128, {--gpu}=0, {--batch_size}=512, {--lr}=5e-4, {--monitor}='auc_val', {--source}='example'
