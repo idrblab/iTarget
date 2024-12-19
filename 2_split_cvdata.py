@@ -35,7 +35,7 @@ if __name__=='__main__':
 
 
     # split train, valid and test
-    if params.split_data == 'True' & params.source != 'bindingdb':
+    if (params.split_data == 'True') & (params.source != 'bindingdb'):
         label = relationship_data(params.source)
         split_data(params, label, )
 

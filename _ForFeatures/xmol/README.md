@@ -1,4 +1,4 @@
-#### prepare pretrained models in `./FT_to_embedding/data/model/` according to `download_url.txt`, and drug smiles according to files in `./FT_to_embedding/data/for_output/fullchembl_drugs.csv` or `./FT_to_embedding/data/for_output/template_drugs.csv`
+#### prepare pretrained models in `./FT_to_embedding/data/model/step_400000` according to `download_url.txt`, and drug smiles according to files in `./FT_to_embedding/data/for_output/fullchembl_drugs.csv` or `./FT_to_embedding/data/for_output/template_drugs.csv`
 ```
 conda activate xmol
 ```
@@ -18,6 +18,7 @@ cd ../../../
 ```
 cd ./bashes
 sh template_xmol.sh
+cd ../
 ```
 #### Then run:
 ```

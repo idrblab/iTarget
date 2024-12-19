@@ -9,13 +9,13 @@ type = 'bindingdb'
 # type ='biosnap'
 # type = 'chembl'
 
-human_cpi = pd.read_csv(prj_path / 'data' / '_original_data' / 'human_cpi' / 'human_cpi.txt', names=['smiles','sequence','label'], header=None, sep=" ")
-bindingdb_cpi_train = pd.read_csv(prj_path / 'data' / '_original_data' / 'bindingdb_cpi' / 'train.txt', names=['smiles','sequence','label'], header=None, sep=" ")
-bindingdb_cpi_dev = pd.read_csv(prj_path / 'data' / '_original_data' / 'bindingdb_cpi' / 'dev.txt', names=['smiles','sequence','label'], header=None, sep=" ")
-bindingdb_cpi_test = pd.read_csv(prj_path / 'data' / '_original_data' / 'bindingdb_cpi' / 'test.txt', names=['smiles','sequence','label'], header=None, sep=" ")
-biosnap_cpi = pd.read_csv(prj_path / 'data' / '_original_data' / 'biosnap_cpi' / 'full.csv')[['SMILES','Protein','Y']]
+human_cpi = pd.read_csv(prj_path / 'data' / '_original_data' / 'human_cpi' / 'human_data.txt', names=['smiles','sequence','label'], header=None, sep=" ")
+bindingdb_cpi_train = pd.read_csv(prj_path / 'data' / '_original_data' / 'bindingdb_cpi' / 'BindingDB' / 'train.txt', names=['smiles','sequence','label'], header=None, sep=" ")
+bindingdb_cpi_dev = pd.read_csv(prj_path / 'data' / '_original_data' / 'bindingdb_cpi' / 'BindingDB' / 'dev.txt', names=['smiles','sequence','label'], header=None, sep=" ")
+bindingdb_cpi_test = pd.read_csv(prj_path / 'data' / '_original_data' / 'bindingdb_cpi' / 'BindingDB' / 'test.txt', names=['smiles','sequence','label'], header=None, sep=" ")
+biosnap_cpi = pd.read_csv(prj_path / 'data' / '_original_data' / 'biosnap_cpi' / 'BioSNAP.csv')[['SMILES','Protein','Y']]
 biosnap_cpi.rename(columns={'SMILES':'smiles','Protein':'sequence','Y':'label'}, inplace=True)
-chembl_cpi = pd.read_csv(prj_path / 'data' / '_original_data' / 'chembl_cpi' / 'activity_with_seq_smiles_label_01_small.csv')[['compound_smiles','Sequence','label']]
+chembl_cpi = pd.read_csv(prj_path / 'data' / '_original_data' / 'chembl_cpi' / 'ChEMBL_data.csv')[['compound_smiles','Sequence','label']]
 chembl_cpi.rename(columns={'compound_smiles':'smiles','Sequence':'sequence','label':'label'}, inplace=True)
 
 

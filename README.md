@@ -58,7 +58,7 @@ cd ./_ForFeatures/xmol/		# for compounds
 
 ```
 mv ./_ForFeatures/esm2/data/{--esm2type}/{--datatype}/{--datatype}_all-data-merge-prot.csv ./data/original_data/scale/
-# for proteins' template, by default, {--esm2type}='esm2_t33_650M_UR50D', {--datatype}='uniprot'
+# for proteins' template, by default, {--esm2type}='esm2_t36_3B_UR50D', {--datatype}='uniprot'
 
 mv ./_ForFeatures/xmol/FT_to_embedding/data/for_output/{--datatype}_all-data-merge-drug.csv ./data/original_data/scale/
 # for compounds' template, by default, {--datatype}='fullchembl'
@@ -70,7 +70,7 @@ mv ./_ForFeatures/xmol/FT_to_embedding/data/for_output/{--datatype}_all-data-mer
 
 ```
 mv ./_ForFeatures/esm2/data/{--esm2type}/{--datatype}/{--datatype}_all-data-merge-prot.csv ./data/original_data/
-# for proteins' features, by default, {--esm2type}='esm2_t33_650M_UR50D', {--datatype}='example' or user-defined
+# for proteins' features, by default, {--esm2type}='esm2_t36_3B_UR50D', {--datatype}='example' or user-defined
 
 mv ./_ForFeatures/xmol/FT_to_embedding/data/for_output/{--datatype}_all-data-merge-drug.csv ./data/original_data/
 # for compounds' features, by default, {--datatype}='example' or user-defined
@@ -86,8 +86,8 @@ conda activate iTarget
 sh 0_feadist.sh	# by default, {--scale_method}='standard', {--scale_source}='uniprot+fullchembl'
 
 # copy calculated configs to work path
-cp ./data/processed_data/drug_fea/scale/standard/*.cfg ./feamap/config/trans_from_uniprot+fullchembl/
-cp ./data/processed_data/prot_fea/scale/standard/*.cfg ./feamap/config/trans_from_uniprot+fullchembl/
+cp ../data/processed_data/drug_fea/scale/standard/*.cfg ./feamap/config/trans_from_{--scale_source}/
+cp ../data/processed_data/protein_fea/scale/standard/*.cfg ./feamap/config/trans_from_{--scale_source}/
 
 # feature transformation
 sh 1_trans_drug.sh	# for compounds, by default, {--scale_method}='standard', {--disttype}='uniprot+fullchembl', {--source}='example' or user-defined
@@ -99,7 +99,7 @@ sh 1_trans_prot.sh	# for proteins, by default, {--scale_method}='standard', {--d
 ##### 3.1 Prepare dataset for cross-validation :
 
 ```
-sh 2_split_cvdata
+sh 2_split_cvdata.sh
 # optional, or you can prepare files following the examples in `./data/processed_data/split_cvdata/`.
 # This step is not required for bindingdb benchmark, has done in step 1.1
 ```
@@ -107,7 +107,7 @@ sh 2_split_cvdata
 ##### 3.2 Run model training and cross-validation:
 
 ```
-sh 3_training_cv.sh # by defalut, {--kfold_num}=5, {--task}='cv', {--n_epochs}=128, {--gpu}=0, {--batch_size}=512, {--lr}=5e-4, {--monitor}='auc_val', {--source}='example'
+sh 3_train_cv.sh # by defalut, {--kfold_num}=5, {--task}='cv', {--n_epochs}=128, {--gpu}=0, {--batch_size}=512, {--lr}=5e-4, {--monitor}='auc_val', {--source}='example'
 ```
 
 

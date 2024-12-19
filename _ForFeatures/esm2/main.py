@@ -116,7 +116,7 @@ def run(start_index,esm2type,datatype,repr_layer,hid_dim):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--start_index", type=str, default='head')
-    parser.add_argument("--esm2type", type=str, default='esm2_t33_650M_UR50D')
+    parser.add_argument("--esm2type", type=str, default='esm2_t36_3B_UR50D')
     parser.add_argument("--datatype", type=str, default='human')
     parser.add_argument("--repr_layer", type=int, default=33)
     parser.add_argument("--hid_dim", type=int, default=1280)

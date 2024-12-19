@@ -11,7 +11,9 @@ export BASE_PATH="$PWD"
 # export PATH="${BASE_PATH}/__python/bin/:$PATH"
 # export PYTHONPATH="${BASE_PATH}/__python/"
 
+
 #library
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-}"
 # export LD_LIBRARY_PATH=/home/work/cuda-9.0/lib64:$LD_LIBRARY_PATH
 # export LD_LIBRARY_PATH=/home/work/cudnn/cudnn_v7/cuda/lib64:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="${BASE_PATH}/nccl_2.3.5/lib/:$LD_LIBRARY_PATH"

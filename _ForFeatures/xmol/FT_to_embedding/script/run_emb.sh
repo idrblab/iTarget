@@ -14,7 +14,9 @@ check_iplist
 distributed_args="--node_ips ${PADDLE_TRAINERS} \
                 --node_id ${PADDLE_TRAINER_ID} \
                 --current_node_ip ${POD_IP}"
-# python -u ./finetune_launch.py ${distributed_args} \
+
+mkdir -p log
+
 python -u  ./run_classifier.py --use_cuda false \
                    --is_distributed false \
                    --use_fast_executor ${e_executor:-"true"} \

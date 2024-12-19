@@ -9,7 +9,7 @@ prj_path = Path(__file__).parent.resolve()
 datatype = 'fullchembl'
 hidden = 768 # xmol
 
-print(f"data type: {datatype}")
+print('data type: {}'.format(datatype))
 
 cpi = pd.read_csv(str(datatype)+"_drugs.csv")
 head_flag = False

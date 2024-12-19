@@ -1,4 +1,4 @@
 ,source,drugid,protid,label
-15,example,DR000003,PR000003,1
-7,example,DR000003,PR000001,1
-4,example,DR000000,PR000001,0
+15,example,example_DR000003,example_PR000003,1
+7,example,example_DR000003,example_PR000001,1
+4,example,example_DR000000,example_PR000001,0

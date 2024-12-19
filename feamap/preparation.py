@@ -16,9 +16,7 @@ from collections import defaultdict
 from collections import OrderedDict
 import seaborn as sns
 import math
-from imblearn.combine import SMOTEENN
-from imblearn.under_sampling import ClusterCentroids
-from imblearn.over_sampling import RandomOverSampler
+
 
 from feamap.utils import distances, calculator
 from feamap import summary
